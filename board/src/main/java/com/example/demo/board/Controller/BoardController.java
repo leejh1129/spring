@@ -65,9 +65,9 @@ public class BoardController {
 	
 	// 삭제처리
 	@GetMapping("/remove")
-	public String remove(@RequestParam(name="bno") Long bno, RedirectAttributes rttr) {
-		log.info("remove : " + bno);
-		service.remove(bno);	
+	public String remove(BoardDTO board, RedirectAttributes rttr) {
+		log.info("remove : " + board);
+		service.remove(board.getBno());	
 		
 		//rttr.addAttribute("result", true); = 사라지지않고 계속 남아있음
 		rttr.addFlashAttribute("remove", true);	// 회발성으로 한번만 출력되고 새로고침되면 사라짐
