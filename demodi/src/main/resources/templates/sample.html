@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>sample.html</title>
+</head>
+<body>
+	<h3>개잠온다</h3>
+	<!-- 요청 URL = http://localhost:81/sample/ex03?title=test&dueData=2025-01 -->
+	<div>[[${serverTime}]]</div>
+	<div th:text="${serverTime}"></div>
+	<!-- 객체명 첫글자 소문자로 선언하면 값이 바로 나옴 -->
+	<!-- [[${todoDto}]] -->
+	
+	<!-- ModelAttribute(name= "todo")로 이름 지정후 호출 -->
+	[[${todo}]]
+	<br>
+	
+	<!-- 파라미터 값 자체를 불러오는법 -->
+	title = [[${param.title}]]
+	<br>
+	
+	<!-- ModalAttribute로 보낸 값 받기 -->
+	<!-- http://localhost:81/sample/ex03?title=test&dueData=2025-01 (ex03요청에서도 받을수있음) -->
+	[[${dept}]]
+	
+</body>
+</html>
