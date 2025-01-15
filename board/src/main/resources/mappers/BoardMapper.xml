@@ -1,62 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.board.mapper.BoardMapper">
-
-<!-- insert: 등록 -->
-<insert id="insert" parameterType="BoardDTO">
-	INSERT INTO tbl_board(
-	       bno
-	      ,title
-	      ,content
-	      ,writer)
-	VALUES(
-	      SEQ_BOARD.nextval
-	     ,#{title}
-	     ,#{content}
-	     ,#{writer})
+<mapper namespace="com.example.demo.mappers.BoardMapper">
+<!-- 등록, 수정, 삭제, 조회, 단건조회 -->
+<insert id="insertBoard" parameterType="boardDTO">
+    INSERT INTO tbl_board(bno, title, content, writer)
+    VALUES (seq_board.nextval, #{title}, #{content}, #{writer})
 </insert>
 
-<!-- update: 수정 -->	
-<update id="update" parameterType="BoardDTO">
-	UPDATE tbl_board
-	   SET
-           title = #{title},
-           content = #{content},
-           writer = #{writer},
-           updatedate = sysdate
-	WHERE bno = #{bno}
+<update id="updateBoard" parameterType="boardDTO">
+    UPDATE tbl_board
+    SET updatedate = sysdate
+	    ,title = #{title}   
+		,content = #{content}
+		,writer = #{writer}
+    WHERE bno = #{bno}
 </update>
 
-<!-- delete: 삭제 -->
-<delete id="delete" parameterType="Long">
-	DELETE FROM
-	tbl_board
-	WHERE bno = ${bno}
+<delete id="deleteBoard" parameterType="long">
+    DELETE FROM tbl_board
+    WHERE bno = #{bno}
 </delete>
 
-<!-- read: 단건조회 -->
-<select id="read" resultType="BoardDTO" parameterType="Long">
-	SELECT bno,
-	       title,
-	       content,
-	       writer,
-	       regdate
-	FROM tbl_board
-	WHERE bno = #{bno}
+<select id="findAll" resultType="BoardDTO">
+	SELECT BNO, TITLE, WRITER, REGDATE FROM (
+	    select /*+index_desc(TBL_BOARD PK_BOARD)*/ 
+	    ROWNUM RN, 
+	    BNO, 
+	    TITLE, 
+	    WRITER, 
+	    REGDATE
+	    from tbl_board 
+	    <![CDATA[WHERE ROWNUM <= #{end}]]>
+	) WHERE RN > #{start}
+	    
 </select>
-	
-<!-- getList: 전체조회 -->
-<select id="getList" resultType="BoardDTO">
+
+<select id="info" parameterType="long">
     SELECT bno,
-	       title,
-	       content,
-	       writer,
-	       regdate
-    FROM tbl_board
-	<![CDATA[
-    WHERE bno > 0
-	]]>
+           title,
+           content,
+           writer,
+           regdate
+    FROM   tbl_board
+    WHERE  bno = #{bno}
 </select>
 
-
+<select id="getCount" resultType="int">
+	SELECT COUNT(*) 
+	FROM tbl_board
+</select>
 </mapper>

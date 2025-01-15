@@ -1,7 +1,9 @@
 package com.example.demo.board;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -9,80 +11,87 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.demo.board.mapper.BoardMapper;
-import com.example.demo.board.service.BoardDTO;
+import com.example.demo.mappers.BoardMapper;
+import com.example.demo.service.BoardDTO;
+import com.example.demo.service.BoardSearchDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest
 public class BoardMapperTest {
-
-	// 의존성 주입
+	
 	@Autowired BoardMapper boardMapper;
 	
-	@Test
+	/*
+	 	1. given: 어떤 상황이 주어졌을 때(이 데이터 기반으로 함)
+
+		2. when: ~를 실행했을 때(검증할 것을 실행)
+		
+		3. then: 검증한 결과가 ~가 나와야함
+	 */
 	@DisplayName("게시글 등록")
-	public void register() {
-		String title = "등록테스트";
-		// given : 테스트 실행을 준비하는 단계
-		BoardDTO board = BoardDTO.builder()
-			.title(title)
-			.content("테스트중")
-			.writer("테스트작가")
-			.build();
+	public void testInsertBoard() {
+		//given
+		BoardDTO board = BoardDTO.builder().title("새로운 등록1")
+							               .content("내용")
+							               .writer("작성자 1")
+							               .build();
 		
-		// when : 테스트를 진행하는 단계
-		int cnt = boardMapper.insert(board);
+		//when
+		int cnt = boardMapper.insertBoard(board);
 		
-		// then : 테스트 결과를 검증하는 단계
-		assertThat(cnt).isEqualTo(cnt);
+		//then
+		assertThat(cnt).isEqualTo(1);
 	}
 	
-	@Test
+
 	@DisplayName("게시글 수정")
-	public void update() {
-		BoardDTO board = BoardDTO.builder()
-				.bno(2L)
-				.title("수정테스트")
-				.content("수정테스트중")
-				.writer("수정테스트작가")
-				.build();
-		int cnt = boardMapper.update(board);
+	public void testUpdateBoard() {
+		BoardDTO board = BoardDTO.builder().title("새로운 등록1")
+				   .bno(5L)
+	               .content("수정된 내용")
+	               .writer("수정된 작성자")
+	               .build();
 		
-		log.info("Update Count : " + cnt);
-		assertThat(cnt).isEqualTo(cnt);
+		int cnt = boardMapper.updateBoard(board);
+		assertThat(cnt).isEqualTo(1);
 	}
 	
-	@Test
-	@DisplayName("게시글삭제")
-	public void delete() {
-		int cnt = boardMapper.delete(5L);
+
+	@DisplayName("게시글 삭제")
+	public void testDelete() {
+		int cnt = boardMapper.deleteBoard(1L);
 		
-		log.info("Delete Count : " + cnt);
-		assertThat(cnt).isEqualTo(cnt);
+		assertThat(cnt).isEqualTo(1);
 	}
 	
-	@Test
-	@DisplayName("단건조회")
-	public void read() {
-		Long bno = 1L;
-		BoardDTO board = boardMapper.read(bno);
+
+	@DisplayName("게시글 상세조회")
+	public void testInfo() {
+		long bno = 2L;
+		
+		BoardDTO board = boardMapper.info(bno);
+		
 		log.info(board.toString());
-		// board조회된 bno가 Long bno와 같은지 체크
-		//assertThat(bno).isEqualTo(board.getBno());
 		
-		// board가 null인지 체크
+		//board가 null이 아닌 경우 ok
 		assertThat(board).isNotNull();
 	}
 	
 	@Test
-	@DisplayName("전체조회")
-	public void getList() {
-		List<BoardDTO> board = boardMapper.getList();
+	@DisplayName("게시글 전체조회")
+	public void testFindAll() {
+		BoardSearchDTO search = new BoardSearchDTO();
+		search.setStart(1);
+		search.setEnd(10);
 		
-		board.forEach(list -> log.info(list.toString()));
+		List<BoardDTO> list = boardMapper.findAll(search);
 		
+		log.info(list.toString());
+		
+		assertThat(list).isNotNull();
+				
 	}
 	
 }

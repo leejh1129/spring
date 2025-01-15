@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,37 +13,51 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.ui.ModelMap;
 
+import com.example.demo.service.BoardDTO;
+import com.example.demo.service.BoardSearchDTO;
+
+import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@Slf4j
+@AutoConfigureMockMvc	//MockMvc -> 가짜 mvc
 public class BoardControllerTest {
-
-	@Autowired
-	MockMvc mvc;
 	
-	//@Test
+	//MockMvc를 인젝션
+	@Autowired MockMvc mvc;
+	
+	@Test
 	@DisplayName("조회 컨트롤러")
-	void list() throws Exception{
-		// mvc.perform = 호출(/list 호출)
+	void list() throws Exception {
+		
+	ModelMap map = mvc.perform(MockMvcRequestBuilders.get("/board/list")
+			.param("page", "100"))
+	    	   .andReturn()
+	    	   .getModelAndView()
+	    	   .getModelMap();
+
+	log.debug(map.getAttribute("list").toString());
+	log.debug(map.getAttribute("paging").toString());
+		/*
+		//호출
 		mvc.perform(get("/board/list"))
-		    .andExpect(status().isOk());					// status = HTTP상태 코드 검증
-		    //.andDo(MockMvcResultHandlers.print());		// .andDo.print() = 결과 출력
+			.andExpect(status().isOk());				//응답을 검증하는 역할
+			//.andDo(MockMvcResultHandlers.print());	//요청/응답 메시지를 확인(디버깅 레벨로 출력)
+		*/
 	}
 	
-
-    @Test
-    @DisplayName("게시글 등록")
-    void register() throws Exception  {
-    	String param = "title=mockTest&content=내용&writer=kim";
-    	mvc.perform(post("/board/register")
-    	   .content(param)
-    	   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    	)
-//    	 .andExpect(status().isOk())
-//         .andExpect((ResultMatcher) content().string("main"))
-//         .andDo(MockMvcResultHandlers.print());
-         ;  
-    }
-	
+	//@Test
+	@DisplayName("등록 컨트롤러")
+	void register() throws Exception {
+		String param = "title=제목제목테스트&content=내용&writer=kim";
+		mvc.perform(post("/board/register")
+			.content(param)
+			.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+			);
+			
+	}
 }
