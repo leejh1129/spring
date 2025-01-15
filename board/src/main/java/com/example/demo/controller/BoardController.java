@@ -39,7 +39,6 @@ public class BoardController {
 						Paging paging) {
 		
 		//페이징 처리
-		paging.setPageUnit(15);
 		paging.setTotalRecord(service.getCount(searchDTO));
 		
 		//첫페이지(아무것도 안들어오면 기본값 1)
