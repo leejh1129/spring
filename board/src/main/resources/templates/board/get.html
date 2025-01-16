@@ -12,11 +12,12 @@
 	// 페이지 로드 이벤트
 	window.addEventListener("DOMContentLoaded", function(){
 		getReply();
+		delReply();
 	});
 	
 	// 댓글 삭제 이벤트
 	function delReply(){
-		document.querySelector(".replys").addEventListener("click", function(){
+		document.querySelector(".replys").addEventListener("click", function(event){
 			if(event.target.classList.contains("btnReplyDel")){
 				// 버튼을 포함하는 부모태그
 				const div = event.target.closest(".row");
