@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mappers.ReplyMapper">
+<!-- 등록, 수정, 삭제, 조회, 단건조회 -->
+<insert id="insertReply" parameterType="ReplyDTO">
+    INSERT INTO tbl_reply(rno, bno, reply, replyer)
+    VALUES (seq_reply.nextval, #{bno}, #{reply}, #{replyer})
+</insert>
+
+<update id="updateReply" parameterType="ReplyDTO">
+    UPDATE tbl_reply
+    SET updatedate = sysdate
+	    ,reply = #{title}   
+		,content = #{content}
+		,writer = #{writer}
+    WHERE rno = #{rno}
+</update>
+
+<delete id="deleteReply" parameterType="long">
+    DELETE FROM tbl_board
+    WHERE rno = #{rno}
+</delete>
+
+<select id="getList" resultType="ReplyDTO">
+	SELECT rno,
+	       bno, 
+	       reply, 
+	       replyer, 
+	       replyDate, 
+	       updateDate
+	FROM tbl_reply
+	where bno = #{bno}
+	 and rno > 0
+</select>
+
+<select id="get" parameterType="long">
+    SELECT bno,
+           reply,
+           replyer,
+           replyDate,
+           updateDate
+    FROM   tbl_reply
+    WHERE  rno = #{rno}
+</select>
+
+<select id="getCountByBno" resultType="int">
+	<![CDATA[	
+		SELECT COUNT(rno) 
+		FROM tbl_reply
+		where bno = #{bno}
+	]]>
+</select>
+
+<!-- 동일한 쿼리 지정해놓고 불러서 쓰는법(공통함수느낌) -->
+<sql id="criteria">
+	<if test="keyword != null and ! keyword.equals('')">
+		<trim prefix="and (" suffix=")" prefixOverrides="or">
+		    <foreach item="type" collection="typeArr">
+		    	<trim prefix="or">
+			    	<choose>
+			    		<when test="type == 'T'.toString()">
+			    			 TITLE LIKE  '%' || #{keyword} || '%'
+			    		</when>
+			    		<when test="type == 'C'.toString()">
+			    			 CONTENT LIKE  '%' || #{keyword} || '%'
+			    		</when>
+			    		<when test="type == 'W'.toString()">
+			    			 WRITER LIKE  '%' || #{keyword} || '%'
+			    		</when>
+			    	</choose>
+		    	</trim>
+		    </foreach>
+	    </trim>
+	</if>
+</sql>
+
+</mapper>

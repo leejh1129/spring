@@ -4,7 +4,6 @@ import java.util.List;
 
 public interface BoardService {
 	
-
 	public boolean register(BoardDTO board);
 
 	public boolean modify(BoardDTO board);

@@ -84,6 +84,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+		
+		<!-- 타일즈 같은거 -->
+		<dependency>
+		  <groupId>nz.net.ultraq.thymeleaf</groupId>
+		  <artifactId>thymeleaf-layout-dialect</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
