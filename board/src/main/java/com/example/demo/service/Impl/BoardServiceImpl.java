@@ -3,13 +3,14 @@ package com.example.demo.service.Impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.mappers.BoardMapper;
+import com.example.demo.mappers.ReplyMapper;
 import com.example.demo.service.BoardDTO;
 import com.example.demo.service.BoardSearchDTO;
 import com.example.demo.service.BoardService;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 //컨트롤에 서비스를 등록함.
@@ -22,6 +23,7 @@ public class BoardServiceImpl implements BoardService {
 	//@RequiredArgsConstructor로 final이 붙은 필드만 생성자 자동 생성
 	private final BoardMapper boardMapper;
 
+	private final ReplyMapper replyMapper;
 	
 	
 	@Override
@@ -35,7 +37,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	@Transactional
 	public boolean remove(Long bno) {
+		// 댓글 삭제
+		replyMapper.deleteByBno(bno);
+		// 게시글 삭제
 		return boardMapper.deleteBoard(bno) == 1;
 	}
 

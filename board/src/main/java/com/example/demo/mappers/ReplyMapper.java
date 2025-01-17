@@ -15,8 +15,11 @@ public interface ReplyMapper {
 	//수정
 	public int updateReply(ReplyDTO replyDto);
 		
-	//삭제
+	// 댓글 단일 삭제
 	public int deleteReply(Long rno);
+	
+	// 게시글 기준 삭제
+	public int deleteByBno(Long bno);
 		
 	//단건조회
 	public ReplyDTO read(Long bno);

@@ -16,19 +16,26 @@
     WHERE bno = #{bno}
 </update>
 
+<update id="updateReplyCnt">
+	UPDATE tbl_board 
+	set replycnt = replycnt + #{amount}
+	WHERE bno = #{bno}
+</update>
+
 <delete id="deleteBoard" parameterType="long">
     DELETE FROM tbl_board
     WHERE bno = #{bno}
 </delete>
 
 <select id="findAll" resultType="BoardDTO">
-	SELECT BNO, TITLE, WRITER, REGDATE FROM (
+	SELECT BNO, TITLE, WRITER, REGDATE, replycnt FROM (
 	    select /*+index_desc(TBL_BOARD PK_BOARD)*/ 
 	    ROWNUM RN, 
 	    BNO, 
 	    TITLE, 
 	    WRITER, 
-	    REGDATE
+	    REGDATE,
+	    replycnt
 	    from tbl_board 
 	    <![CDATA[
 	    	WHERE ROWNUM <= #{end}
@@ -43,7 +50,8 @@
            title,
            content,
            writer,
-           regdate
+           regdate,
+           replycnt
     FROM   tbl_board
     WHERE  bno = #{bno}
 </select>

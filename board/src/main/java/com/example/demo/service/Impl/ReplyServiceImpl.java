@@ -1,7 +1,10 @@
 package com.example.demo.service.Impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.common.Paging;
+import com.example.demo.mappers.BoardMapper;
 import com.example.demo.mappers.ReplyMapper;
 import com.example.demo.service.ReplyDTO;
 import com.example.demo.service.ReplyPageDTO;
@@ -15,9 +18,14 @@ import lombok.RequiredArgsConstructor;
 public class ReplyServiceImpl implements ReplyService{
 
 	private final ReplyMapper replyMapper;
+	private final BoardMapper boardMapper;
 	
+	@Transactional
 	@Override
 	public boolean register(ReplyDTO reply) {
+		
+		boardMapper.updateReplyCnt(reply.getBno(), 1);
+		
 		return replyMapper.insertReply(reply) == 1;
 	}
 
@@ -26,8 +34,13 @@ public class ReplyServiceImpl implements ReplyService{
 		return replyMapper.updateReply(reply) == 1;
 	}
 
+	@Transactional
 	@Override
 	public boolean remove(Long rno) {
+		
+		ReplyDTO reply = replyMapper.read(rno);
+		
+		boardMapper.updateReplyCnt(reply.getBno(), -1);
 		return replyMapper.deleteReply(rno) == 1;
 	}
 
@@ -38,8 +51,17 @@ public class ReplyServiceImpl implements ReplyService{
 
 	@Override
 	public ReplyPageDTO getList(ReplySearchDTO search, Long bno) {
+		Paging paging = new Paging();
+		int cnt = replyMapper.getCountByBno(bno);
+		
+		// paging - 전체건수, pageUnit, page
+		paging.setPage(search.getPage());
+		paging.setPageUnit(search.getAmount());
+		paging.setTotalRecord(cnt);
+		
 		return new ReplyPageDTO(
-				replyMapper.getCountByBno(bno),
+				cnt,
+				paging,
 				replyMapper.getList(search,bno));
 	}
 

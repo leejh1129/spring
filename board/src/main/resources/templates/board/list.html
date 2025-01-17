@@ -72,6 +72,7 @@
 				<tr>
 					<th>번호</th>
 					<th>제목</th>
+					<th>댓글수</th>
 					<th>작성자</th>
 					<th>작성일자</th>
 				</tr>
@@ -79,7 +80,9 @@
 			<tbody>
 				<tr th:each=" board : ${list}"> <!-- 보낼때 addAttribute에서 ""안에 이름을 그대로 사용  -->
 					<td th:text="${board.bno}">1</td>
-					<td th:text="${board.title}" th:onclick="|location.href='/board/get?bno=${board.bno}'|">제목</td>
+					<td th:text="|${board.title} [${board.replycnt}]|" 
+					th:onclick="|location.href='/board/get?bno=${board.bno}'|">제목</td>
+					<td	th:text="${board.replycnt}">0</td> 
 					<td	th:text="${board.writer}">홍길동</td>
 					<td	th:text="${board.regdate}">2025/01/06</td>
 				</tr>
