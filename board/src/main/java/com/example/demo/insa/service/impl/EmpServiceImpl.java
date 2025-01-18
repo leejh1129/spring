@@ -33,6 +33,18 @@ public class EmpServiceImpl implements EmpService{
 	public List<JobsDTO> getJobList() {
 		return empmapper.getJobList();
 	}
+
+	// 사원 아이디 맥스 값 
+	@Override
+	public String max() {
+		return empmapper.max();
+	}
+
+	// 사원 삭제
+	@Override
+	public boolean delete(Long employeeId) {
+		return empmapper.delete(employeeId) == 1;
+	}
 	
 	
 

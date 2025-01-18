@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html >
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -9,9 +9,12 @@
 	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
 </head>
+
 <body>
 <div class="container">
 	<div class="row">
+		<button id="insert" onclick="insert">등록</button>
+		
 		<div class="col">
 			<h2>사원 목록</h2>
 			<table class="table text-center">
@@ -25,13 +28,13 @@
 				</thead>
 				
 				<tbody>
-					<tr th:each="emplist : ${list}">
-						<td class="text-center" th:text="${emplist.employeeId}">100</td>
+					<tr th:each="emplist : ${list}" class="test">
+						<td class="text-center" th:text="${emplist.employeeId}" id="empId">100</td>
 						<td class="text-center" th:text="${emplist.lastName}">홍길동</td>
 						<td class="text-center" th:text="${emplist.jobId}">PROGRAMER</td>
 						<td class="text-center">
 							<button class="btnUpd">조회</button>
-							<button class="btnDel">삭제</button>
+							<button class="btnDel" th:onclick="|location.href='/emp/empDel?employeeId=${emplist.employeeId}'|">삭제</button>
 						</td>
 					</tr>	
 				</tbody>
@@ -42,4 +45,12 @@
 </div>
 
 </body>
+<script>
+	window.addEventListener("DOMContentLoaded", function(){
+		insert.addEventListener("click", () => {
+			location.href="/emp/register";
+		})
+	})
+	
+</script>
 </html>

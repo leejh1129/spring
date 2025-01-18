@@ -13,4 +13,10 @@ public interface EmpService {
 	// jobId 조회
 	public List<JobsDTO> getJobList();
 	
+	// 사원아이디 맥스 값 
+	public String max();
+	
+	// 사원 삭제
+	public boolean delete(Long employeeId);
+	
 }

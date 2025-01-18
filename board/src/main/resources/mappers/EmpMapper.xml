@@ -8,16 +8,14 @@
 	                       first_name,
 	                       last_name,
 	                       email,
-	                       phone_number,
 	                       hire_date,
 	                       job_id
 	                      )
-	VALUES (#{employeeId},
+	VALUES (employeeId_seq.nextval,
 	        #{firstName},
 	        #{lastName},
 	        #{email},
-	        #{phoneNumber},
-	        sysdate,
+	        #{hireDate},
 	        #{jobId}
 	        )
 </insert>
@@ -55,6 +53,19 @@
 	       max_salary
     FROM jobs
 </select>
+
+<!-- 사원 id max 값 -->
+<select id="max">
+	SELECT max(employee_id)
+	FROM employees
+</select>
+
+<!-- 사원 삭제 -->
+<delete id="delete">
+	DELETE FROM
+	employees
+	WHERE employee_id = #{employeeId}
+</delete>
 
 
 </mapper>
