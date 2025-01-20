@@ -2,6 +2,7 @@ package com.example.demo.insa.service;
 
 import java.util.Date;
 
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.validation.constraints.Email;
@@ -13,7 +14,7 @@ public class EmpDTO {
 
 	private Long employeeId;
 	private String firstName;
-	@NotBlank(message = "성을 입력하세요")
+	@NotBlank(message = "이름을 입력하세용ㅇ요용요용ㅇ")
 	private String lastName;
 	@Email
 	private String email;

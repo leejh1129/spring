@@ -33,9 +33,10 @@ public class EmpController {
 	
 	// 사원등록 페이지
 	@GetMapping("/register")
-	public String register(Model model) {
+	public String register(Model model, EmpDTO dto) {
 		model.addAttribute("jobList", empService.getJobList());
 		model.addAttribute("list", empService.max());
+		
 		return "emp/register";
 	}
 	
@@ -46,6 +47,7 @@ public class EmpController {
 			               RedirectAttributes rttr) {
 		
 	    if(bindingResult.hasErrors()) {
+	    	log.info(bindingResult.toString());
 	    	return "redirect:register";
 	    }
 		log.info(dto.toString());
