@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.mappers.BoardMapper;
-import com.example.demo.mappers.ReplyMapper;
+import com.example.demo.mapper.BoardMapper;
+import com.example.demo.mapper.ReplyMapper;
 import com.example.demo.service.BoardDTO;
 import com.example.demo.service.BoardSearchDTO;
 import com.example.demo.service.BoardService;

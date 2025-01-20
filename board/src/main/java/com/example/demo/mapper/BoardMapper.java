@@ -1,4 +1,4 @@
-package com.example.demo.mappers;
+package com.example.demo.mapper;
 
 import java.util.List;
 

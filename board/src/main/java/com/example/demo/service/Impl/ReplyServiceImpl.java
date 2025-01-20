@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.common.Paging;
-import com.example.demo.mappers.BoardMapper;
-import com.example.demo.mappers.ReplyMapper;
+import com.example.demo.mapper.BoardMapper;
+import com.example.demo.mapper.ReplyMapper;
 import com.example.demo.service.ReplyDTO;
 import com.example.demo.service.ReplyPageDTO;
 import com.example.demo.service.ReplySearchDTO;
