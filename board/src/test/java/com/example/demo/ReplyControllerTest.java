@@ -67,7 +67,7 @@ public class ReplyControllerTest {
     	//then
     	.andExpect(status().isOk())
     	.andExpect(jsonPath("$.reply").value("개잠온다"))
-       .andDo(print())  ;
+        .andDo(print())  ;
 
     }
 
